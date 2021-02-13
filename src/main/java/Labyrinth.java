@@ -1,34 +1,24 @@
-package com.company;
-
 import java.util.*;
 
-public class Main {
+public class Labyrinth {
 
     private final int[] gin;
     private final int[] gout;
+    private final int[][] matrix;
     private int[] actualPosition;
     private int [] lastOperation;
     private int counter;
-    private List<MapPosition> visitedList;
+
     
 
-    public Main(int [] gin, int[] gout) {
+    public Labyrinth(int [] gin, int[] gout,int[][] matrix) {
         this.gin = gin;
         this.gout = gout;
         this.actualPosition = gin;
         this.lastOperation = new int[]{0,0};
         this.counter = 0;
-        this.visitedList = new ArrayList<>();
-        visitedList.add(new MapPosition(gin[0],gin[1]));
+        this.matrix = matrix;
     }
-
-    int[][] matrix = {{1, 1, 0, 0, 1, 1, 1,1},
-                      {1, 1, 0, 0, 0, 1, 1,1},
-                      {1, 1, 1, 1, 0, 1, 1,1},
-                      {1, 1, 0, 0, 0, 1, 1,1},
-                      {1, 1, 0, 1, 0, 1, 1,1},
-                      {1, 1, 0, 1, 0, 1, 0,1},
-                      {1, 1, 0, 1, 1, 1, 1,1}};
 
     private final int[] up = {-1, 0};
     private final int[] down = {1, 0};
@@ -97,22 +87,6 @@ public class Main {
     }
 
 
-
-    private boolean passableOperation(MapPosition start, MapPosition  end){
-
-        int x = Math.abs(start.getX() - end.getX());
-        int y = Math.abs(start.getY() - end.getY());
-        List<Integer> list = new ArrayList<>();
-        list.add(0);
-        list.add(1);
-        list.add(-1);
-
-        if (list.contains(x) && list.contains(y)) {
-            return true;
-        }
-        return false;
-    }
-
     public int howFar() {
 
         while (!checkPosition()){
@@ -125,13 +99,4 @@ public class Main {
 
         return counter;
     }
-
-    public static void main(String[] args) {
-
-        Main main = new Main(new int[]{0,2},new int[]{6,2});
-        System.out.println(main.howFar());
-
-    }
-
-
 }

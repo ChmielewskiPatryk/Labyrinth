@@ -1,8 +1,6 @@
-package com.company;
-
 import java.util.*;
 
-public class Labyrinth {
+public class Labyrinth2 {
     private final int[] UP = {-1, 0};
     private final int[] DOWN = {1, 0};
     private final int[] LEFT = {0, -1};
@@ -16,7 +14,7 @@ public class Labyrinth {
     private List<int[]> operations;
 
 
-    public Labyrinth(int[] gin, int[] gout, int[][] labyrinth) {
+    public Labyrinth2(int[] gin, int[] gout, int[][] labyrinth) {
         this.labyrinth = labyrinth;
         this.gin = gin;
         this.gout = gout;
@@ -83,7 +81,7 @@ public class Labyrinth {
                 possible = false;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            possible =false;
+            possible = false;
 
         }
         return possible;
@@ -100,21 +98,6 @@ public class Labyrinth {
             }
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-
-
-        int[][] matrix = {{1, 1, 0, 1, 1, 1, 1, 1},
-                {1, 1, 0, 0, 1, 1, 1, 1},
-                {1, 1, 1, 0, 0, 1, 1, 1},
-                {1, 1, 1, 1, 0, 1, 1, 1},
-                {1, 1, 0, 0, 0, 1, 1, 1},
-                {1, 1, 0, 1, 0, 1, 1, 1},
-                {1, 1, 0, 1, 0, 0, 0, 1},
-                {1, 1, 0, 1, 1, 1, 1, 1}};
-        Labyrinth labyrinth = new Labyrinth(new int[]{1, 2}, new int[]{7, 2}, matrix);
-        System.out.println(labyrinth.solveLabyrinth());
     }
 
 
