@@ -8,7 +8,6 @@ public class Labyrinth2 {
 
     private final int[] gin;
     private final int[] gout;
-    private int[] actualPosition;
     private int counter;
     int[][] labyrinth;
     private List<int[]> operations;
@@ -18,7 +17,6 @@ public class Labyrinth2 {
         this.labyrinth = labyrinth;
         this.gin = gin;
         this.gout = gout;
-        this.actualPosition = gin;
         this.counter = 1;
 
         operations = new ArrayList<>();
@@ -30,7 +28,10 @@ public class Labyrinth2 {
 
     public int solveLabyrinth() {
         LinkedList<LinkedList<MapPosition>> list = new LinkedList<>();
-        list.add(returnPossiblePointsToMove(actualPosition));
+        if(!checkStartAndEndPoint(gin,gout,labyrinth)){
+            return -1;
+        }
+        list.add(returnPossiblePointsToMove(gin));
         while (!list.isEmpty()) {
             LinkedList<MapPosition> tempList = new LinkedList<>();
             for (int i = 0; i < list.getFirst().size(); i++) {
@@ -98,6 +99,13 @@ public class Labyrinth2 {
             }
         }
         return false;
+    }
+
+    private boolean checkStartAndEndPoint(int[] gin, int[] gout, int[][] matrix) {
+        if (gin[0] > matrix.length || gin[1] > matrix.length || gout[0] > matrix.length || gout[1] > matrix.length
+                || gin[0] < 0 || gin[1] < 0 || gout[0] < 0 || gout[1] < 0) {
+            return false;
+        }return true;
     }
 
 

@@ -19,5 +19,6 @@ public class Labyrinth2Test {
 
             assertEquals(10, new Labyrinth2(gin, gout, matrix2).solveLabyrinth());
             assertEquals(-1, new Labyrinth2(new int []{0,0}, gout, matrix2).solveLabyrinth());
+            assertEquals(-1, new Labyrinth2(new int []{-1,0}, gout, matrix2).solveLabyrinth());
     }
 }
