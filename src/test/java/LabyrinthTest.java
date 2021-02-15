@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class Labyrinth2Test {
+public class LabyrinthTest {
 
     @Test
     public void solveLabyrinth() {
@@ -17,8 +17,8 @@ public class Labyrinth2Test {
                     {1, 1, 0, 1, 0, 0, 0, 1},
                     {1, 1, 0, 1, 1, 1, 1, 1}};
 
-            assertEquals(10, new Labyrinth2(gin, gout, matrix2).solveLabyrinth());
-            assertEquals(-1, new Labyrinth2(new int []{0,0}, gout, matrix2).solveLabyrinth());
-            assertEquals(-1, new Labyrinth2(new int []{-1,0}, gout, matrix2).solveLabyrinth());
+            assertEquals(10, new Labyrinth(gin, gout, matrix2).solveLabyrinth());
+            assertEquals(-1, new Labyrinth(new int []{0,0}, gout, matrix2).solveLabyrinth());
+            assertEquals(-1, new Labyrinth(new int []{-1,0}, gout, matrix2).solveLabyrinth());
     }
 }

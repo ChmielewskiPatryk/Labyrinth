@@ -1,102 +1,104 @@
 import java.util.*;
 
 public class Labyrinth {
+    private final int[] UP = {-1, 0};
+    private final int[] DOWN = {1, 0};
+    private final int[] LEFT = {0, -1};
+    private final int[] RIGHT = {0, 1};
 
     private final int[] gin;
     private final int[] gout;
-    private final int[][] matrix;
-    private int[] actualPosition;
-    private int [] lastOperation;
     private int counter;
+    int[][] labyrinth;
+    private List<int[]> operations;
 
-    
 
-    public Labyrinth(int [] gin, int[] gout,int[][] matrix) {
+    public Labyrinth(int[] gin, int[] gout, int[][] labyrinth) {
+        this.labyrinth = labyrinth;
         this.gin = gin;
         this.gout = gout;
-        this.actualPosition = gin;
-        this.lastOperation = new int[]{0,0};
-        this.counter = 0;
-        this.matrix = matrix;
+        this.counter = 1;
+
+        operations = new ArrayList<>();
+        operations.add(UP);
+        operations.add(DOWN);
+        operations.add(LEFT);
+        operations.add(RIGHT);
     }
 
-    private final int[] up = {-1, 0};
-    private final int[] down = {1, 0};
-    private final int[] left = {0, -1};
-    private final int[] right = {0, 1};
-
- private int maxMovements(){
-     int maxMoves=0;
-     for (int i = 0; i < matrix.length-1 ; i++) {
-         for (int j = 0; j <matrix.length-1 ; j++) {
-             if(matrix[i][j]== 0){
-                 maxMoves++;
-             }
-         }
-     }
-     return maxMoves*2;
- }
-
-    private boolean checkPosition() {
-        return Arrays.equals(actualPosition, gout);
-    }
-
-
-    private void operation(int[] operation) {
-        actualPosition[0] = actualPosition[0] + operation[0];
-        actualPosition[1] = actualPosition[1] + operation[1];
-        lastOperation = operation;
-     counter ++;
-    }
-
-    private boolean possibleOperation(int[] operation) {
-        int x = actualPosition[0] + operation[0];
-        int y = actualPosition[1] + operation[1];
-        if (matrix[x][y] == 1) {
-            return false;
+    public int solveLabyrinth() {
+        LinkedList<LinkedList<int[]>> list = new LinkedList<>();
+        if(!checkStartAndEndPoint(gin,gout,labyrinth)){
+            return -1;
         }
-        return true;
-    }
-    private boolean lastOperation(int [] operation){
-        if (Arrays.equals(lastOperation, operation)) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    private boolean move() {
-     if(maxMovements() <counter){
-         return false;
-        }
-        if (possibleOperation(down) && !lastOperation(up) ) {
-            operation(down);
-            return true;
-        }else if(possibleOperation(right) && !lastOperation(left) ){
-            operation(right);
-            return true;
-        }else if(possibleOperation(left) && !lastOperation(right)){
-
-            operation(left);
-            return true;
-        } else if(possibleOperation(up)){
-            operation(up);
-            return true;
-        }
-        return  false;
-    }
-
-
-    public int howFar() {
-
-        while (!checkPosition()){
-            if(maxMovements()< counter){
-                counter =-1;
+        list.add(returnPossiblePointsToMove(gin));
+        while (!list.isEmpty()) {
+            LinkedList<int[]> tempList = new LinkedList<>();
+            for (int i = 0; i < list.getFirst().size(); i++) {
+                if (checkPosition(list.getFirst())) {
+                    return counter;
+                }
+                tempList.addAll(returnPossiblePointsToMove(list.getFirst().get(i)));
+            }
+            list.remove();
+            counter++;
+            if (tempList.size() != 0) {
+                list.add(tempList);
+            } else {
                 break;
             }
-                move();
-        }
 
-        return counter;
+        }
+        return -1;
     }
+
+    private LinkedList<int[]> returnPossiblePointsToMove(int[] actualPosition) {
+        LinkedList<int[]> mapPositions = new LinkedList<>();
+        for (int i = 0; i < operations.size(); i++) {
+            if (possibleOperation(operations.get(i), actualPosition)) {
+                int x = actualPosition[0] + operations.get(i)[0];
+                int y = actualPosition[1] + operations.get(i)[1];
+                mapPositions.add(new int[]{x,y});
+            }
+        }
+        return mapPositions;
+    }
+
+
+    private boolean possibleOperation(int[] operation, int[] actualPosition) {
+        int x = actualPosition[0] + operation[0];
+        int y = actualPosition[1] + operation[1];
+        boolean possible = true;
+        try {
+            if (labyrinth[x][y] >= 1) {
+                possible = false;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            possible = false;
+
+        }
+        return possible;
+    }
+
+
+    private boolean checkPosition(LinkedList<int[]> list) {
+        for (int i = 0; i < list.size(); i++) {
+            int x = list.get(i)[0];
+            int y = list.get(i)[1];
+            int[] actualPosition = new int[]{x, y};
+            if (Arrays.equals(actualPosition, gout)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkStartAndEndPoint(int[] gin, int[] gout, int[][] matrix) {
+        if (gin[0] > matrix.length || gin[1] > matrix.length || gout[0] > matrix.length || gout[1] > matrix.length
+                || gin[0] < 0 || gin[1] < 0 || gout[0] < 0 || gout[1] < 0) {
+            return false;
+        }return true;
+    }
+
+
 }
